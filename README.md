@@ -1,24 +1,33 @@
-# Ethereum Custom Address Generator
+# [Live Demo](https://custom-eth-wallet-address.vercel.app)
 
-[![Demo](https://img.shields.io/badge/Demo-Live%20Preview-blue)](https://custom-eth-wallet-address.vercel.app)
+<div align="center">
+   Ethereum Custom Address Generator
+ 
+   ![Next.js](https://img.shields.io/badge/Next.js-14.0.0-black)
+   ![TypeScript](https://img.shields.io/badge/TypeScript-5.0.0-blue)
+   ![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.3.0-38B2AC)
+   ![Framer Motion](https://img.shields.io/badge/Framer_Motion-10.16.4-ff69b4)
+   ![Web Workers](https://img.shields.io/badge/Web_Workers-Enabled-green)
+</div>
+
 [![GitHub](https://img.shields.io/badge/GitHub-Repository-green)](https://github.com/attilagaliba/CustomEthWalletAddress.git)
 
-Modern ve güvenli bir Ethereum özel adres üretici. İstediğiniz prefix ve suffix'e sahip Ethereum adresleri oluşturun.
+A modern and secure Ethereum custom address generator. Create Ethereum addresses with your desired prefix and suffix.
 
 ![Preview](https://i.ibb.co/Vp9WvpQC/image.png)
 
-## 🚀 Özellikler
+## 🚀 Features
 
-- ⚡ Yüksek performanslı Web Worker implementasyonu
-- 🔒 Tamamen client-side işlem (private key'ler asla sunucuya gönderilmez)
-- 🎨 Modern ve responsive tasarım
-- 🖼️ Dinamik NFT/Artwork galerisi
-- 📊 Gerçek zamanlı istatistikler ve izleme
-- ✨ Framer Motion animasyonları
-- 🌈 Özelleştirilebilir prefix ve suffix
-- ✅ Checksum desteği
+- ⚡ High-performance Web Worker implementation
+- 🔒 Fully client-side processing (private keys never leave your browser)
+- 🎨 Modern and responsive design
+- 🖼️ Dynamic NFT/Artwork gallery
+- 📊 Real-time statistics and monitoring
+- ✨ Framer Motion animations
+- 🌈 Customizable prefix and suffix
+- ✅ Checksum support
 
-## 🛠️ Teknolojiler
+## 🛠️ Technologies
 
 - Next.js 14 (App Router)
 - TypeScript
@@ -27,71 +36,71 @@ Modern ve güvenli bir Ethereum özel adres üretici. İstediğiniz prefix ve su
 - Web Workers
 - Vercel Blob Storage (Artwork hosting)
 
-## 📁 Dosya Yapısı
+## 📁 File Structure
 
 ```
 src/
 ├── app/
-│   ├── page.tsx           # Ana uygulama sayfası
-│   ├── searchWorker.ts    # Web Worker implementasyonu
-│   ├── images.json        # Artwork konfigürasyonu
-│   ├── info.json         # Uygulama bilgileri
-│   └── layout.tsx        # Layout komponenti
+│   ├── page.tsx           # Main application page
+│   ├── searchWorker.ts    # Web Worker implementation
+│   ├── images.json        # Artwork configuration
+│   ├── info.json         # Application information
+│   └── layout.tsx        # Layout component
 ├── styles/
-│   └── globals.css       # Global stiller
+│   └── globals.css       # Global styles
 └── public/
-    └── assets/          # Statik dosyalar
+    └── assets/          # Static files
 ```
 
-## ⚙️ Kurulum
+## ⚙️ Installation
 
-1. Repoyu klonlayın:
+1. Clone the repository:
 ```bash
 git clone https://github.com/attilagaliba/CustomEthWalletAddress.git
 cd CustomEthWalletAddress
 ```
 
-2. Bağımlılıkları yükleyin:
+2. Install dependencies:
 ```bash
 npm install
-# veya
+# or
 yarn install
 ```
 
-3. Geliştirme sunucusunu başlatın:
+3. Start the development server:
 ```bash
 npm run dev
-# veya
+# or
 yarn dev
 ```
 
-4. Tarayıcınızda açın: `http://localhost:3000`
+4. Open in your browser: `http://localhost:3000`
 
-## 🔧 Konfigürasyon
+## 🔧 Configuration
 
 ### images.json
 
-Artwork galerisi için konfigürasyon dosyası. Her artwork için aşağıdaki alanları içermelidir:
+Configuration file for the artwork gallery. Each artwork should include the following fields:
 
 ```json
 {
   "image": "artwork_url",
-  "artist": "sanatçı_adı",
-  "artName": "eser_adı",
-  "artLink": "eser_linki",
+  "artist": "artist_name",
+  "artName": "artwork_name",
+  "artLink": "artwork_link",
   "file": "video" | "image"
 }
 ```
 
-- `image`: Artwork URL'i (görsel veya video)
-- `artist`: Sanatçı adı
-- `artName`: Eser adı
-- `artLink`: Eserin orijinal linki
-- `file`: Dosya tipi ("video" veya "image")
+- `image`: Artwork URL (image or video)
+- `artist`: Artist name
+- `artName`: Artwork name
+- `artLink`: Original artwork link
+- `file`: File type ("video" or "image")
 
 ### info.json
 
-Uygulama bilgileri ve bağlantıları için konfigürasyon dosyası:
+Configuration file for application information and links:
 
 ```json
 {
@@ -104,47 +113,47 @@ Uygulama bilgileri ve bağlantıları için konfigürasyon dosyası:
 }
 ```
 
-## 🎨 Özelleştirme
+## 🎨 Customization
 
-### Artwork Değişim Süresi
+### Artwork Change Interval
 
-`page.tsx` içinde `ARTWORK_CHANGE_INTERVAL` değerini değiştirerek artwork değişim süresini ayarlayabilirsiniz (milisaniye cinsinden).
+You can adjust the artwork change interval (in milliseconds) by modifying `ARTWORK_CHANGE_INTERVAL` in `page.tsx`:
 
 ```typescript
-const ARTWORK_CHANGE_INTERVAL = 8000; // 8 saniye
+const ARTWORK_CHANGE_INTERVAL = 8000; // 8 seconds
 ```
 
-### Tema ve Renkler
+### Theme and Colors
 
-Tailwind CSS konfigürasyonunu `tailwind.config.js` dosyasında özelleştirebilirsiniz.
+Customize the Tailwind CSS configuration in `tailwind.config.js`.
 
-## 🔒 Güvenlik
+## 🔒 Security
 
-- Tüm işlemler tarayıcınızda yerel olarak gerçekleştirilir
-- Private key'ler asla sunucuya gönderilmez veya saklanmaz
-- Web Worker kullanılarak ana thread bloklanmaz
+- All operations are performed locally in your browser
+- Private keys are never transmitted or stored on any server
+- Web Worker implementation prevents main thread blocking
 
-## 🤝 Katkıda Bulunma
+## 🤝 Contributing
 
-1. Fork edin
-2. Feature branch oluşturun (`git checkout -b feature/amazing-feature`)
-3. Değişikliklerinizi commit edin (`git commit -m 'feat: add amazing feature'`)
-4. Branch'inizi push edin (`git push origin feature/amazing-feature`)
-5. Pull Request oluşturun
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Create a Pull Request
 
-## 📝 Lisans
+## 📝 License
 
-MIT License - daha fazla detay için [LICENSE](LICENSE) dosyasına bakın.
+MIT License - see [LICENSE](LICENSE) file for details.
 
-## 🙏 Teşekkürler
+## 🙏 Acknowledgments
 
-- NFT sanatçılarına artwork'leri için
-- Ethereum topluluğuna
-- Tüm katkıda bulunanlara
+- NFT artists for their artwork contributions
+- Ethereum community
+- All contributors
 
-## 🔗 Faydalı Linkler
+## 🔗 Useful Links
 
-- [Demo](https://custom-eth-wallet-address.vercel.app)
-- [GitHub Repo](https://github.com/attilagaliba/CustomEthWalletAddress.git)
+- [Live Demo](https://custom-eth-wallet-address.vercel.app)
+- [GitHub Repository](https://github.com/attilagaliba/CustomEthWalletAddress.git)
 - [Artwork Submission](https://x.com/attilagaliba/status/1902466607370162255)
 - [Creator Website](https://gikklab.com)
