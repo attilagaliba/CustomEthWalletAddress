@@ -88,7 +88,7 @@ Configuration file for the artwork gallery. Each artwork should include the foll
   "artist": "artist_name",
   "artName": "artwork_name",
   "artLink": "artwork_link",
-  "file": "video" | "image"
+  "file": "video | image"
 }
 ```
 
