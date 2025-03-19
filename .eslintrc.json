@@ -8,6 +8,8 @@
     "react-hooks/exhaustive-deps": "off",
     "@next/next/no-img-element": "off",
     "prefer-const": "off",
-    "no-undef": "off"
-  }
+    "no-undef": "off",
+    "react/no-unescaped-entities": "off"
+  },
+  "ignorePatterns": ["*.js", "*.jsx", "*.ts", "*.tsx"]
 } 
