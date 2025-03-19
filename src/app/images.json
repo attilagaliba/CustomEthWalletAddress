@@ -1,0 +1,30 @@
+[
+    {
+        "image": "https://csottg00trwzoqcu.public.blob.vercel-storage.com/d-9XNcaQMgxLB8pD4hT3bxoVtuuJbQPj.jpg",
+        "artist": "gikkilab",
+        "artName": "🐤",
+        "artLink": "https://www.instagram.com/p/DGn5qmXoRMe",
+        "file": "image"
+    },
+    {
+        "image": "https://csottg00trwzoqcu.public.blob.vercel-storage.com/freecompress-0001_7%20%281%29-hsQqXdcGFWfwzxJROYaupdpVHzrYFm.mp4",
+        "artist": "gikkilab",
+        "artName": "Step into something new",
+        "artLink": "https://www.instagram.com/p/DGxZ-tlg-_b/",
+        "file": "video"
+    },
+    {
+        "image": "https://csottg00trwzoqcu.public.blob.vercel-storage.com/gamelab-gRX2uU4VqGaG0lhnIJbdnXekegifDZ.mp4",
+        "artist": "gikkilab",
+        "artName": "Gikki GameLab 👾",
+        "artLink": "https://www.instagram.com/p/DAlEewdodlT/",
+        "file": "video"
+    },
+    {
+        "image": "https://csottg00trwzoqcu.public.blob.vercel-storage.com/origin-eWsvR668ZAwB2iWZul7HAQpIP1FnT7.jpg",
+        "artist": "gikkilab",
+        "artName": "Move back to the origin",
+        "artLink": "https://www.instagram.com/p/C_qbK4OosZg/",
+        "file": "image"
+    }
+]
