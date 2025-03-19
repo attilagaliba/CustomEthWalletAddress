@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import images from './images.json';
 import info from './info.json';
-import Image from 'next/image';
 
 // Artwork tipi için interface
 interface Artwork {
@@ -67,16 +66,17 @@ export default function Home() {
   });
 
   const [stats, setStats] = useState<SearchStats>({
-    attempts: 0,
-    speed: 0,
     difficulty: 1,
     probability50: 0,
     estimatedTime: '0 s',
     isValid: true,
-    example: '0x0000000000000000000000000000000000000000'
+    example: '0x0000000000000000000000000000000000000000',
+    attempts: 0,
+    speed: 0
   });
 
   const [isSearching, setIsSearching] = useState(false);
+  const [attempts, setAttempts] = useState<WalletAttempt[]>([]);
   const [wallet, setWallet] = useState<Wallet | null>(null);
   const [worker, setWorker] = useState<Worker | null>(null);
   const [currentImage, setCurrentImage] = useState(artworks[0]);
@@ -86,8 +86,8 @@ export default function Home() {
   const [randomAddress, setRandomAddress] = useState('0'.repeat(40));
   const [randomPrivateKey, setRandomPrivateKey] = useState('0'.repeat(64));
 
-  const [defaultAddress, setDefaultAddress] = useState('');
-  const [defaultPrivateKey, setDefaultPrivateKey] = useState('');
+  const [defaultAddress, setDefaultAddress] = useState('0'.repeat(40));
+  const [defaultPrivateKey, setDefaultPrivateKey] = useState('0'.repeat(64));
 
   const [isCopied, setIsCopied] = useState(false);
 
@@ -130,14 +130,17 @@ export default function Home() {
 
   // Rastgele adres ve private key üretimi için interval
   useEffect(() => {
-    if (isSearching) {
-      const interval = setInterval(() => {
+    let interval: NodeJS.Timeout;
+
+    if (isSearching && !wallet) {
+      interval = setInterval(() => {
         setRandomAddress(generateRandomHex(40));
         setRandomPrivateKey(generateRandomHex(64));
-      }, 100);
-      return () => clearInterval(interval);
+      }, 100); // Her 100ms'de bir değiştir
     }
-  }, [isSearching]);
+
+    return () => clearInterval(interval);
+  }, [isSearching, wallet]);
 
   const isValidHex = (hex: string): boolean => {
     return hex.length ? /^[0-9A-F]+$/g.test(hex.toUpperCase()) : true;
@@ -265,43 +268,74 @@ export default function Home() {
     });
   }, [options]);
 
-  const handleWorkerMessage = (e: MessageEvent) => {
-    if (e.data.type === 'result') {
-      setWallet(e.data.wallet);
-      setIsSearching(false);
-    } else if (e.data.type === 'progress') {
-      setStats(prev => ({
-        ...prev,
-        attempts: prev.attempts + e.data.attempts,
-        speed: e.data.speed
-      }));
-    }
-  };
-
   const stopSearch = () => {
     if (worker) {
+      worker.postMessage({ type: 'stop' });
       worker.terminate();
       setWorker(null);
-    }
-    setIsSearching(false);
-  };
+      setIsSearching(false);
+      setSearchStartTime(null);
+      setRandomAddress('0'.repeat(40));
+      setRandomPrivateKey('0'.repeat(64));
 
-  const startSearch = () => {
-    setStats(prev => ({
-      ...prev,
-      attempts: 0,
-      speed: 0
-    }));
-    setWallet(null);
-    setupWorker();
-    setIsSearching(true);
+      const newWorker = new Worker(new URL('./searchWorker.ts', import.meta.url));
+      setupWorker(newWorker);
+      setWorker(newWorker);
+    }
   };
 
   // Worker setup fonksiyonu
-  const setupWorker = () => {
+  const setupWorker = (worker: Worker) => {
+    worker.onmessage = (e) => {
+      const { type, wallet, attempts: attemptCount, speed } = e.data;
+
+      if (type === 'progress') {
+        if (attemptCount % 10 === 0) {
+          setAttempts(prev => [{
+            ...wallet,
+            id: Math.random().toString(36),
+            timestamp: Date.now()
+          }, ...prev.slice(0, 100)]);
+        }
+
+        setStats(prev => ({
+          ...prev,
+          attempts: attemptCount,
+          speed: speed
+        }));
+      } else if (type === 'found') {
+        setWallet({
+          address: wallet.address,
+          privateKey: wallet.privateKey,
+          seed: `${options.prefix}...${options.suffix}`,
+          difficulty: stats.difficulty
+        });
+        setIsSearching(false);
+      }
+    };
+  };
+
+  useEffect(() => {
     const searchWorker = new Worker(new URL('./searchWorker.ts', import.meta.url));
-    searchWorker.onmessage = handleWorkerMessage;
+    setupWorker(searchWorker);
     setWorker(searchWorker);
+    return () => searchWorker.terminate();
+  }, []);
+
+  const startSearch = () => {
+    if (!stats.isValid || isSearching || !worker) return;
+
+    setIsSearching(true);
+    setAttempts([]);
+    setWallet(null);
+    setSearchStartTime(Date.now());
+
+    worker.postMessage({
+      type: 'start',
+      prefix: options.prefix,
+      suffix: options.suffix,
+      isChecksum: options.isChecksum
+    });
   };
 
   const formatElapsedTime = (startTime: number): string => {
@@ -310,14 +344,6 @@ export default function Home() {
     const minutes = Math.floor((elapsed % 3600) / 60);
     const seconds = elapsed % 60;
     return `${hours}h ${minutes}m ${seconds}s`;
-  };
-
-  useEffect(() => {
-    calculateStats();
-  }, [options]);
-
-  const handleImageChange = (prevImage: Artwork) => {
-    // ... existing code ...
   };
 
   return (
@@ -593,15 +619,7 @@ export default function Home() {
             transition={{ duration: 0.5 }}
             className="absolute inset-0"
           >
-            {currentImage.file === 'image' ? (
-              <Image 
-                src={currentImage.image} 
-                alt={currentImage.artName}
-                width={500}
-                height={300}
-                className="w-full h-full object-cover"
-              />
-            ) : (
+            {currentImage.file === 'video' ? (
               <video
                 key={currentImage.image}
                 src={currentImage.image}
@@ -610,6 +628,13 @@ export default function Home() {
                 loop
                 muted
                 playsInline
+              />
+            ) : (
+              <img
+                key={currentImage.image}
+                src={currentImage.image}
+                alt={currentImage.artName}
+                className="absolute inset-0 w-full h-full object-cover"
               />
             )}
 
