@@ -14,7 +14,7 @@
 
 A modern and secure Ethereum custom address generator. Create Ethereum addresses with your desired prefix and suffix.
 
-![Preview](https://i.ibb.co/Vp9WvpQC/image.png)
+![Preview](https://i.ibb.co/tTXqwqns/image.png)
 
 ## 🚀 Features
 
@@ -88,7 +88,7 @@ Configuration file for the artwork gallery. Each artwork should include the foll
   "artist": "artist_name",
   "artName": "artwork_name",
   "artLink": "artwork_link",
-  "file": "video" | "image"
+  "file": "video | image"
 }
 ```
 
